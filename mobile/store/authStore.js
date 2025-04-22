@@ -50,7 +50,7 @@ export const useAuthStore = create((set) => ({
         set({ isLoading: true });
 
         try {
-            await fetch(`${mainLink}/api/auth/login`, {
+            const response = await fetch(`${mainLink}/api/auth/login`, {
 
                 method: "POST",
                 headers: {
