@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -14,14 +15,19 @@ import { Link } from "expo-router";
 import React, { useState } from "react";
 import COLORS from "../../constants/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useAuthStore } from '../../store/authStore.js';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {};
+  const { user, isLoading, login } = useAuthStore();
+
+  const handleLogin = async () => {
+    const result = await login(email, password);
+    if (!result) Alert.alert("Error", result.error);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -96,9 +102,9 @@ const Login = () => {
               <TouchableOpacity
                 style={styles.button}
                 onPress={handleLogin}
-                disabled={loading}
+                disabled={isLoading}
               >
-                {loading ? (
+                {isLoading ? (
                   <ActivityIndicator size="small" color={COLORS.white} />
                 ) : (
                   <Text style={styles.buttonText}>Login</Text>
