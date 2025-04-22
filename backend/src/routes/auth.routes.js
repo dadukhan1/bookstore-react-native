@@ -48,7 +48,7 @@ router.post("/register", async (req, res) => {
 
         const token = generateToken(user._id)
 
-        res.status(201).json({
+        return res.status(201).json({
             token,
             user: {
                 _id: user._id,
@@ -64,7 +64,7 @@ router.post("/register", async (req, res) => {
         res.status(500).json({ message: "Internal server error." });
     }
 
-    res.send("send is working register or signUp")
+    return res.send("send is working register or signUp")
 })
 
 router.post("/login", async (req, res) => {
