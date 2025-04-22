@@ -1,4 +1,5 @@
 import {
+  Alert,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -13,6 +14,7 @@ import { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Route } from "expo-router/build/Route.js";
 import { useRouter } from "expo-router";
+import { useAuthStore } from "../../store/authStore.js";
 
 const Signup = () => {
   const [username, setUserName] = useState("");
@@ -21,9 +23,18 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const { user, isLoading, register } = useAuthStore();
+
   const router = useRouter();
 
-  const handleSignUp = () => { };
+  const handleSignUp = async () => {
+    const result = await register(username, email, password);
+
+    if (!result.success) {
+      Alert.alert("Error", result.error)
+    }
+
+  };
 
   return (
     <KeyboardAvoidingView
@@ -50,7 +61,7 @@ const Signup = () => {
                 />
                 <TextInput
                   style={styles.input}
-                  placeholder="Username"
+                  placeholder="dadukhan"
                   placeholderTextColor={COLORS.placeholderText}
                   value={username}
                   onChangeText={setUserName}
@@ -70,7 +81,7 @@ const Signup = () => {
                 />
                 <TextInput
                   style={styles.input}
-                  placeholder="Email"
+                  placeholder="dadukhan@gmail.com"
                   value={email}
                   placeholderTextColor={COLORS.placeholderText}
                   onChangeText={setEmail}
