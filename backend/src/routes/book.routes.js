@@ -1,14 +1,15 @@
 import express from 'express';
 import Book from '../models/book.model.js';
 import { protectRoute } from '../middleware/auth.middleware.js';
+import cloudinary from '../lib/cloudinary.js';
 
 const route = express.Router();
 
 route.post("/", protectRoute, async (req, res) => {
     try {
 
-        const { title, caption, rating, user, image } = req.body;
-        if (!title || !caption || !rating || !user || !image) {
+        const { title, caption, rating, image } = req.body;
+        if (!title || !caption || !rating || !image) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
@@ -16,7 +17,7 @@ route.post("/", protectRoute, async (req, res) => {
         const uploadResponse = await cloudinary.uploader.upload(image);
         const imageUrl = uploadResponse.secure_url;
 
-        const newBook = await new Book.create({
+        const newBook = await Book.create({
             title,
             caption,
             rating,
@@ -24,7 +25,7 @@ route.post("/", protectRoute, async (req, res) => {
             user: req.user._id
         })
 
-        await newBook.save();
+        // await newBook.save();
 
         res.status(201).json({ newBook })
 
@@ -67,11 +68,11 @@ route.get("/", protectRoute, async (req, res) => {
     }
 })
 
-route.get("/user", protectRoute, async (req, res) => {  
-    try{
+route.get("/user", protectRoute, async (req, res) => {
+    try {
         const books = await Book.find({ user: req.user._id }).sort({ createdAt: -1 }).exec();
         res.json({ books });
-    }catch(error){
+    } catch (error) {
         console.error("Error in getting user books", error);
         res.status(500).json({ message: error.message });
     }
@@ -81,13 +82,13 @@ route.delete("/:id", protectRoute, async (req, res) => {
     try {
         const book = await Book.findById(req.params.id);
 
-        if (!book) 
+        if (!book)
             return res.status(404).json({ message: "Book not found" });
 
-        if(book.user.toString() !== req.user._id.toString())
+        if (book.user.toString() !== req.user._id.toString())
             return res.status(403).json({ message: "You are not authorized to delete this book" });
 
-        if(book.image && book.image.includes("cloudinary")){
+        if (book.image && book.image.includes("cloudinary")) {
             try {
                 const publicId = book.image.split("/").pop().split(".")[0];
                 await cloudinary.uploader.destroy(publicId);
@@ -102,7 +103,7 @@ route.delete("/:id", protectRoute, async (req, res) => {
         res.status(200).json({ message: "Book deleted successfully" });
 
     } catch (error) {
-        
+
     }
 })
 
