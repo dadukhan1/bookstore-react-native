@@ -7,7 +7,7 @@ const router = express.Router();
 const generateToken = (userId) => {
     return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "7d" })
 }
-    
+
 router.post("/register", async (req, res) => {
 
     try {
@@ -87,8 +87,8 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({ message: "Invalid credentials" })
         }
 
-
-
+        const token = generateToken(user._id);
+        
         res.status(200).json({
             token,
             user: {
