@@ -10,10 +10,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import styles from "../../assets/styles/login.styles";
+import styles from "../../assets/styles/login.styles.js";
 import { Link } from "expo-router";
 import React, { useState } from "react";
-import COLORS from "../../constants/colors";
+import COLORS from "../../constants/colors.js";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useAuthStore } from '../../store/authStore.js';
 
