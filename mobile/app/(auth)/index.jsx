@@ -91,7 +91,7 @@ const Login = () => {
                     style={styles.eyeIcon}
                   >
                     <Ionicons
-                      name={showPassword ? "eye-off-outline" : "eye-outline"}
+                      name={showPassword ? "eye-outline" : "eye-off-outline"}
                       size={20}
                       color={COLORS.primary}
                     />
