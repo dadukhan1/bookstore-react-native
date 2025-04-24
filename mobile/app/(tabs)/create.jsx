@@ -124,7 +124,7 @@ const Create = () => {
       setTitle("");
       setImage(null);
       setImageBase64(null);
-      router.push("/home");
+      router.push("/");
 
     } catch (error) {
       console.log("Error submitting form", error);
