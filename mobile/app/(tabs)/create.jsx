@@ -18,7 +18,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useAuthStore } from "../../store/authStore.js";
 import { ActivityIndicator } from "react-native";
 
-import { MAINLINK } from "@env"
+import { MAINLINK } from "@env";
 
 const Create = () => {
   const [title, setTitle] = useState("");
