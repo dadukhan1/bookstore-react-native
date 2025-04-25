@@ -4,12 +4,31 @@ import SafeScreen from "../components/SafeScreen.jsx";
 import { StatusBar } from "expo-status-bar";
 import { useAuthStore } from "../store/authStore.js";
 import { useEffect } from "react";
+import { useFonts } from "expo-font";
+import * as SplashScreen from 'expo-splash-screen';
 
 export default function RootLayout() {
   const router = useRouter();
   const segments = useSegments();
 
   const { checkAuth, user, token } = useAuthStore();
+
+  const [fontsLoaded] = useFonts({
+    "JetBrainsMono-Medium": require("../assets/fonts/JetBrainsMono-Medium.ttf"),
+  });
+
+  // Prevent auto-hide of splash screen on load
+  useEffect(() => {
+    SplashScreen.preventAutoHideAsync();
+    console.log("_layout")
+  }, []);
+
+  // Hide splash screen when fonts are loaded
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
 
   useEffect(() => {
     checkAuth();
@@ -23,16 +42,16 @@ export default function RootLayout() {
     if (!isSignedIn && !inAuthScreen) {
       router.replace("/(auth)");
     } else if (isSignedIn && inAuthScreen) {
-      router.replace('/(tabs)');
+      router.replace("/(tabs)");
     }
   }, [user, token, segments]);
 
   return (
     <SafeAreaProvider>
-      <SafeScreen >
-        <Stack screenOptions={{ headerShown: false }} >
-          <Stack.Screen name='(tabs)' />
-          <Stack.Screen name='(auth)' />
+      <SafeScreen>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="(auth)" />
         </Stack>
       </SafeScreen>
       <StatusBar style="dark" />

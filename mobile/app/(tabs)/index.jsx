@@ -17,7 +17,7 @@ import COLORS from "../../constants/colors.js";
 import { formatPublishDate } from "../../lib/utils.js";
 import Loader from "../../components/Loader.jsx";
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const Home = () => {
   const { token, logout } = useAuthStore();
